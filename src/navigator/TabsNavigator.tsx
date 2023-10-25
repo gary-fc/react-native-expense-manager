@@ -5,6 +5,7 @@ import StatsTabScreen from '../screens/StatsTabScreen';
 import AccountsTabScreen from '../screens/AccountsTabScreen';
 import MoreTabScreen from '../screens/MoreTabScreen';
 import { ThemeContext } from '../context/theme/ThemeContext';
+import { Text } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,10 +14,31 @@ export const TabsNavigator = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={{
-        tabBarActiveTintColor: theme.colors.primary,
-        headerShown: false,
-      }}>
+      screenOptions={({ route }) =>
+        ({
+          tabBarIcon: ({ color }) => {
+            let iconName: string = '';
+            switch (route.name) {
+              case 'DashboardTabScreen':
+                iconName = 'H';
+                break;
+              case 'StatsTabScreen':
+                iconName = 'S';
+                break;
+              case 'AccountTabScreen':
+                iconName = 'A';
+                break;
+              case 'MoreTabScreen':
+                iconName = 'M';
+                break;
+            }
+
+            return <Text style={{ color: color }}>{iconName}</Text>;
+          },
+          tabBarActiveTintColor: theme.colors.primary,
+          tabBarInactiveTintColor: 'gray',
+        } as any)
+      }>
       <Tab.Screen
         options={{ title: 'Home' }}
         name="DashboardTabScreen"

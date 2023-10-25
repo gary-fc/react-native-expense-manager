@@ -1,9 +1,11 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
+import React, { createContext, useEffect, useReducer } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { authReducer, AuthState } from './authReducer';
+
 import userApi from '../../api/services/userApi';
 import { LoginInput } from '../../api/input/user/LoginInput';
 import { RegisterInput } from '../../api/input/user/RegisterInput';
+import { authInitialState } from './authState';
+import { authReducer } from './authReducer';
 
 type AuthContextProps = {
   errorMessage: string;
@@ -16,24 +18,15 @@ type AuthContextProps = {
   removeError: () => void;
 };
 
-const authInitialState: AuthState = {
-  status: 'checking',
-  token: null,
-  errorMessage: '',
-};
-
 const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
 
   useEffect(() => {
-    console.log(state)
     AsyncStorage.getItem('token')
       .then(token => {
-        console.log(token);
         if (!token) return dispatch({ type: 'notAuthenticated' });
-        console.log('token');
         dispatch({ type: 'signUp', payload: { token } });
       })
       .catch(() => {
@@ -44,7 +37,6 @@ export const AuthProvider = ({ children }: any) => {
   const signUp = async (data: RegisterInput) => {
     try {
       const resp = await userApi.post('/auth/register', data);
-      console.log(resp.data);
     } catch (error: any) {
       console.log(error.response.data);
     }
@@ -82,7 +74,7 @@ export const AuthProvider = ({ children }: any) => {
         signIn,
         logOut,
         notAuthenticated,
-        removeError
+        removeError,
       }}>
       {children}
     </AuthContext.Provider>
