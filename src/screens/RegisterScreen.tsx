@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
+  Alert,
   Image,
   Keyboard,
   KeyboardAvoidingView,
@@ -36,7 +37,18 @@ const RegisterScreen = ({ navigation }: Props) => {
       repeatPassword: '',
     });
 
-  const { signUp } = useContext(AuthContext);
+  const { signUp, registerSuccess } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (registerSuccess) {
+      Alert.alert('Success', 'User created successfully', [
+        {
+          text: 'OK',
+          onPress: () => navigation.replace('LoginScreen'),
+        },
+      ]);
+    }
+  }, [registerSuccess]);
 
   const onRegister = () => {
     Keyboard.dismiss();
@@ -82,7 +94,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 First Name
               </Text>
               <CustomTextInput
-                placeholder="pedro@expensemanager.com"
+                placeholder="Juan"
                 onChangeText={text => onChange(text, 'email')}
                 onSubmitEditing={onRegister}
               />
@@ -93,7 +105,7 @@ const RegisterScreen = ({ navigation }: Props) => {
                 Last Name
               </Text>
               <CustomTextInput
-                placeholder="pedro@expensemanager.com"
+                placeholder="Perez"
                 onChangeText={text => onChange(text, 'email')}
                 onSubmitEditing={onRegister}
               />
@@ -104,7 +116,8 @@ const RegisterScreen = ({ navigation }: Props) => {
                 Email
               </Text>
               <CustomTextInput
-                placeholder="pedro@expensemanager.com"
+                capitalize={'none'}
+                placeholder="juan@expensemanager.com"
                 onChangeText={text => onChange(text, 'email')}
                 onSubmitEditing={onRegister}
               />

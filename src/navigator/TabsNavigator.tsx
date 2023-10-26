@@ -35,6 +35,7 @@ export const TabsNavigator = () => {
 
             return <Text style={{ color: color }}>{iconName}</Text>;
           },
+          headerShown: false,
           tabBarActiveTintColor: theme.colors.primary,
           tabBarInactiveTintColor: 'gray',
         } as any)

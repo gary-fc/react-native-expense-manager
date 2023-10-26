@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Text } from 'react-native';
-import { Card, Layout, List } from '@ui-kitten/components';
-import AccountItem from '../components/dashboard/AccountItem';
+import { AccountsContext } from '../context/accounts/AccountsContext';
+import AuthContext from '../context/auth/AuthContext';
 
 const AccountsTabScreen = () => {
-  return (
-    <Layout style={{ flex: 1 }} level="2">
-      <Card status="success">
-        <Text style={{ textAlign: 'center' }}>100$</Text>
-      </Card>
+  const { getAmountTotal } = useContext(AccountsContext);
+  const { userId } = useContext(AuthContext);
 
-      <Card>
-        <List data={[]} renderItem={AccountItem} style={{ height: 100 }} />
-      </Card>
-    </Layout>
+  useEffect(() => {
+    console.log('asdasd');
+    if (userId) {
+      getAmountTotal(userId);
+    }
+  }, [userId]);
+
+  return (
+    <>
+      <Text>AccountsTabScreen</Text>
+    </>
   );
 };
 

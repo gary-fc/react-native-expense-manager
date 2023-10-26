@@ -6,17 +6,16 @@ export const accountsReducer = (
   action: AccountsAction,
 ): AccountsState => {
   switch (action.type) {
-    case 'loadAccounts':
+    case 'getAmountTotalSuccess':
+      return {
+        ...state,
+        amountTotal: action.payload,
+      };
+
+    case 'loadAccountsSuccess':
       return {
         ...state,
         accounts: action.payload,
-        isLoading: false,
-      };
-
-    case 'createAccount':
-      return {
-        ...state,
-        isLoading: true,
       };
 
     case 'createAccountSuccess':

@@ -4,7 +4,7 @@ export interface CategoriesState {
   composeCategory: boolean;
 }
 
-export const accountsInitialState: CategoriesState = {
+export const categoriesInitialState: CategoriesState = {
   categories: [],
   isLoading: false,
   composeCategory: false,

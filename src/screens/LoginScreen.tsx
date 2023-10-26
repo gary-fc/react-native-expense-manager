@@ -34,17 +34,15 @@ const LoginScreen = ({ navigation }: Props) => {
 
   useEffect(() => {
     if (errorMessage.length === 0) return;
-    Alert.alert('Login Error', errorMessage, [
+    Alert.alert('User or password incorrect', errorMessage, [
       {
         text: 'OK',
         onPress: removeError,
       },
     ]);
-    console.log({ errorMessage });
   }, [errorMessage]);
 
   const onLogin = () => {
-    console.log({ email, password });
     Keyboard.dismiss();
     signIn({ email, password });
   };

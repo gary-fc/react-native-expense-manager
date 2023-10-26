@@ -29,4 +29,4 @@ export const categoriesReducer = (
     default:
       return state;
   }
-}
+};

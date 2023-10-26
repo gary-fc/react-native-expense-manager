@@ -24,6 +24,7 @@ export const authReducer = (
       return {
         ...state,
         token: action.payload.token,
+        userId: action.payload.userId,
         status: 'authenticated',
         errorMessage: '',
       };
@@ -42,6 +43,12 @@ export const authReducer = (
         status: 'not-authenticated',
         token: null,
         errorMessage: '',
+      };
+
+    case 'registerSuccess':
+      return {
+        ...state,
+        registerSuccess: true,
       };
 
     default:

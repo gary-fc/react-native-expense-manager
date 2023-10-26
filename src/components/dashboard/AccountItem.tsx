@@ -1,7 +1,10 @@
 import React from 'react';
 import { Button, Icon, IconElement, ListItem } from '@ui-kitten/components';
 
-const AccountItem = () => {
+const AccountItem = ({ item } ) => {
+  console.log(item)
+
+  const { accountName, description, amount } = item.item;
   const renderItemIcon = (props: any): IconElement => (
     <Icon
       {...props}
@@ -20,10 +23,11 @@ const AccountItem = () => {
     <ListItem
       accessoryLeft={renderItemIcon}
       accessoryRight={renderItemOptions}
-      title="Item"
-      description="Description for Item"
+      title={accountName}
+      description={amount.toString()}
     />
   );
 };
+
 
 export default AccountItem;

@@ -3,3 +3,9 @@ export interface TransactionsState {
   isLoading: boolean;
   composeTransaction: boolean;
 }
+
+export const transactionsInitialState: TransactionsState = {
+  transactions: [],
+  isLoading: false,
+  composeTransaction: false,
+};

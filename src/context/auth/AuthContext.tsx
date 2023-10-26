@@ -10,9 +10,11 @@ import { authReducer } from './authReducer';
 type AuthContextProps = {
   errorMessage: string;
   token: string | null;
+  userId: string | null;
+  registerSuccess: boolean;
   status: 'checking' | 'authenticated' | 'not-authenticated';
-  signUp: (data: RegisterInput) => void;
-  signIn: (data: LoginInput) => void;
+  signUp: (data: RegisterInput) => Promise<void>;
+  signIn: (data: LoginInput) => Promise<void>;
   logOut: () => void;
   notAuthenticated: () => void;
   removeError: () => void;
@@ -24,20 +26,24 @@ export const AuthProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer(authReducer, authInitialState);
 
   useEffect(() => {
-    AsyncStorage.getItem('token')
-      .then(token => {
-        if (!token) return dispatch({ type: 'notAuthenticated' });
-        dispatch({ type: 'signUp', payload: { token } });
+    AsyncStorage.clear();
+    Promise.all([AsyncStorage.getItem('token'), AsyncStorage.getItem('userId')])
+      .then(([token, userId]) => {
+        if (!token || !userId) return dispatch({ type: 'notAuthenticated' });
+        dispatch({ type: 'signUp', payload: { token, userId } });
       })
       .catch(() => {
         dispatch({ type: 'notAuthenticated' });
-        //TODO: validate token with backend
       });
   }, []);
   const signUp = async (data: RegisterInput) => {
     try {
       const resp = await userApi.post('/auth/register', data);
+      dispatch({
+        type: 'registerSuccess',
+      });
     } catch (error: any) {
+      dispatch({ type: 'addError', payload: error.response.data });
       console.log(error.response.data);
     }
   };
@@ -46,14 +52,16 @@ export const AuthProvider = ({ children }: any) => {
       const resp = await userApi.post('/auth/login', data);
       dispatch({
         type: 'signUp', payload: {
-          token: resp.data,
+          token: resp.data.jwt,
+          userId: resp.data.userId,
         },
       });
 
-      await AsyncStorage.setItem('token', resp.data);
+      await AsyncStorage.setItem('token', resp.data.jwt);
+      await AsyncStorage.setItem('userId', resp.data.userId);
     } catch (error: any) {
-      console.log(error.response.data);
-      dispatch({ type: 'addError', payload: 'error.response.data' });
+      console.log(error);
+      dispatch({ type: 'addError', payload: error });
     }
   };
   const logOut = () => {
