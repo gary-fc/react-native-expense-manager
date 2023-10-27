@@ -3,3 +3,9 @@ export interface TransfersState {
   isLoading: boolean;
   composeTransfer: boolean;
 }
+
+export const transfersInitialState: TransfersState = {
+  transfers: [],
+  isLoading: false,
+  composeTransfer: false,
+};

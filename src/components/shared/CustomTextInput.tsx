@@ -1,16 +1,18 @@
 import { StyleSheet, TextInput, View } from 'react-native';
 import React, { useContext, useState } from 'react';
+import { ThemeContext } from '../../context/theme/ThemeContext';
 import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
 import icoMoonConfig from '../../assets/selection.json';
-import { ThemeContext } from '../../context/theme/ThemeContext';
 
 const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 
 interface CustomTextInputProps {
   placeholder: string;
   icon?: string;
+  defaultValue?: string;
   capitalize?: 'none' | 'sentences' | 'words' | 'characters';
   isPassword?: boolean;
+  disabled?: boolean;
   autoCorrect?: boolean;
   onIconPress?: () => void;
   onSubmitEditing?: () => void;
@@ -37,8 +39,10 @@ const CustomTextInput = (customTextInputProps: CustomTextInputProps) => {
         onChangeText={text => customTextInputProps.onChangeText(text)}
         onSubmitEditing={() => customTextInputProps.onSubmitEditing ? customTextInputProps.onSubmitEditing() : null}
         secureTextEntry={customTextInputProps.isPassword}
+        editable={!customTextInputProps.disabled}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        defaultValue={customTextInputProps.defaultValue}
       />
 
       {customTextInputProps.icon ? (

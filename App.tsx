@@ -8,21 +8,26 @@ import { AccountsProvider } from './src/context/accounts/AccountsContext';
 import { CategoriesProvider } from './src/context/categories/CategoriesContext';
 import { TransactionsProvider } from './src/context/transactions/TransactionsContext';
 import { TransfersProvider } from './src/context/transfers/TransfersContext';
+import { ApplicationProvider } from '@ui-kitten/components';
+
+import * as eva from '@eva-design/eva';
 
 const AppState = ({ children }: any) => {
   return (
     <>
-      <AuthProvider>
-        <CategoriesProvider>
-          <AccountsProvider>
-            <TransactionsProvider>
-              <TransfersProvider>
-                <ThemeProvider>{children}</ThemeProvider>
-              </TransfersProvider>
-            </TransactionsProvider>
-          </AccountsProvider>
-        </CategoriesProvider>
-      </AuthProvider>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <AuthProvider>
+          <CategoriesProvider>
+            <AccountsProvider>
+              <TransactionsProvider>
+                <TransfersProvider>
+                  <ThemeProvider>{children}</ThemeProvider>
+                </TransfersProvider>
+              </TransactionsProvider>
+            </AccountsProvider>
+          </CategoriesProvider>
+        </AuthProvider>
+      </ApplicationProvider>
     </>
   );
 };

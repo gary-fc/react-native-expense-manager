@@ -12,6 +12,7 @@ type AccountsContextProps = {
     accountName: string,
     description: string,
     amount: number,
+    userId: string,
   ) => Promise<void>;
 };
 
@@ -27,8 +28,7 @@ export const AccountsProvider = ({ children }: any) => {
       const resp = await accountApi.get('/account/GetAccounts', {
         params: { userId: userId },
       });
-      console.log('oki');
-      console.log(resp.data);
+
       dispatch({ type: 'loadAccountsSuccess', payload: resp.data });
     } catch (e) {
       console.log('error');
@@ -53,15 +53,19 @@ export const AccountsProvider = ({ children }: any) => {
     accountName: string,
     description: string,
     amount: number,
+    userId: string,
   ) => {
+    console.log("createAccount")
     try {
-      const resp = await accountApi.post('/account/CreateAccount', {
+      const resp = await accountApi.post('/account', {
         accountName,
         description,
         amount,
+        userId
       });
-      console.log(resp.data);
-      dispatch({ type: 'createAccountSuccess', payload: resp.data });
+
+      loadAccounts(userId);
+      getAmountTotal(userId);
     } catch (e) {
       console.log(e);
     }

@@ -1,11 +1,19 @@
 import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import DashboardTabScreen from '../screens/DashboardTabScreen';
+import DashboardTabScreen from '../screens/tabs/DashboardTabScreen';
 import StatsTabScreen from '../screens/StatsTabScreen';
-import AccountsTabScreen from '../screens/AccountsTabScreen';
+import AccountsTabScreen from '../screens/tabs/AccountsTabScreen';
 import MoreTabScreen from '../screens/MoreTabScreen';
 import { ThemeContext } from '../context/theme/ThemeContext';
-import { Text } from 'react-native';
+import CategoriesTabScreen from '../screens/tabs/CategoriesTabScreen';
+
+import { createIconSetFromIcoMoon } from 'react-native-vector-icons';
+import icoMoonConfig from '../assets/selection.json';
+import TransactionsScreen from '../screens/tabs/TransactionsTabScreen';
+import TransactionsTabScreen from '../screens/tabs/TransactionsTabScreen';
+import TransfersTabScreen from '../screens/tabs/TransfersTabScreen';
+
+const Icon = createIconSetFromIcoMoon(icoMoonConfig);
 
 const Tab = createBottomTabNavigator();
 
@@ -20,20 +28,29 @@ export const TabsNavigator = () => {
             let iconName: string = '';
             switch (route.name) {
               case 'DashboardTabScreen':
-                iconName = 'H';
+                iconName = 'home';
                 break;
               case 'StatsTabScreen':
-                iconName = 'S';
+                iconName = 'stats-bars';
                 break;
               case 'AccountTabScreen':
-                iconName = 'A';
+                iconName = 'database';
                 break;
               case 'MoreTabScreen':
-                iconName = 'M';
+                iconName = 'equalizer';
+                break;
+              case 'CategoriesTabScreen':
+                iconName = 'menu';
+                break;
+              case 'TransactionsTabScreen':
+                iconName = 'share';
+                break;
+              case 'TransfersTabScreen':
+                iconName = 'flickr2';
                 break;
             }
 
-            return <Text style={{ color: color }}>{iconName}</Text>;
+            return <Icon name={iconName} />;
           },
           headerShown: false,
           tabBarActiveTintColor: theme.colors.primary,
@@ -45,10 +62,20 @@ export const TabsNavigator = () => {
         name="DashboardTabScreen"
         component={DashboardTabScreen}
       />
+      {/*<Tab.Screen*/}
+      {/*  options={{ title: 'Stats' }}*/}
+      {/*  name="StatsTabScreen"*/}
+      {/*  component={StatsTabScreen}*/}
+      {/*/>*/}
       <Tab.Screen
-        options={{ title: 'Stats' }}
-        name="StatsTabScreen"
-        component={StatsTabScreen}
+        options={{ title: 'Transfer' }}
+        name="TransfersTabScreen"
+        component={TransfersTabScreen}
+      />
+      <Tab.Screen
+        options={{ title: 'Transaction' }}
+        name="TransactionsTabScreen"
+        component={TransactionsTabScreen}
       />
       <Tab.Screen
         options={{ title: 'Accounts' }}
@@ -56,10 +83,15 @@ export const TabsNavigator = () => {
         component={AccountsTabScreen}
       />
       <Tab.Screen
-        options={{ title: 'More' }}
-        name="MoreTabScreen"
-        component={MoreTabScreen}
+        name="CategoriesTabScreen"
+        component={CategoriesTabScreen}
+        options={{ title: 'Categories' }}
       />
+      {/*<Tab.Screen*/}
+      {/*  options={{ title: 'More' }}*/}
+      {/*  name="MoreTabScreen"*/}
+      {/*  component={MoreTabScreen}*/}
+      {/*/>*/}
     </Tab.Navigator>
   );
 };

@@ -13,17 +13,17 @@ export const transactionsReducer = (
         isLoading: false,
       };
 
+    case 'loadTransactionsPeriod':
+      return {
+        ...state,
+        transactionsPeriod: action.payload,
+        isLoading: false,
+      };
+
     case 'createTransaction':
       return {
         ...state,
         isLoading: true,
-      };
-
-    case 'createTransactionSuccess':
-      return {
-        ...state,
-        transactions: [...state.transactions, action.payload],
-        isLoading: false,
       };
 
     default:
